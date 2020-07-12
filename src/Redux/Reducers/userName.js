@@ -1,4 +1,4 @@
-const userNameReducer = (state = "", action) => {
+const userNameReducer = (state = null, action) => {
   switch (action.type) {
     case "UPDATE":
       return action.payload;
