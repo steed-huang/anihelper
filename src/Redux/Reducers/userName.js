@@ -1,4 +1,4 @@
-const currentToolReducer = (state = -1, action) => {
+const userNameReducer = (state = "", action) => {
   switch (action.type) {
     case "UPDATE":
       return action.payload;
@@ -7,4 +7,4 @@ const currentToolReducer = (state = -1, action) => {
   }
 };
 
-export default currentToolReducer;
+export default userNameReducer;
