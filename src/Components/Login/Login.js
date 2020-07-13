@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import Spinner from "react-bootstrap/Spinner";
 import { connect } from "react-redux";
 import { toggleLogin, updateName } from "../../Redux/Actions";
 
@@ -27,11 +28,12 @@ function Login(props) {
           <InputGroup className="mb-3">
             <FormControl ref={textInput} />
             <InputGroup.Append>
-              <Button variant="primary" onClick={() => handleLogin()}>
-                Confirm
+              <Button disabled={props.loading} variant="primary" onClick={() => handleLogin()}>
+                {props.loading ? <Spinner as="span" animation="border" size="sm" /> : "Confirm"}
               </Button>
             </InputGroup.Append>
           </InputGroup>
+          {props.error ? <p>Username not found!</p> : ""}
         </Modal.Body>
       </Modal>
     </>

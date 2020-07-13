@@ -9,7 +9,7 @@ const initialState = {
 const userNameReducer = (state = initialState, action) => {
   switch (action.type) {
     case "REQUEST_UPDATENAME":
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: false };
     case "REQUEST_UPDATENAME_SUCCESS":
       return {
         username: action.payload,
