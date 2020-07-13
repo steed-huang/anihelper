@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 import { connect } from "react-redux";
 import { toggleLogin, updateName } from "../../Redux/Actions";
 
@@ -33,7 +34,8 @@ function Login(props) {
               </Button>
             </InputGroup.Append>
           </InputGroup>
-          {props.error ? <p>Username not found!</p> : ""}
+
+          {props.error ? <Alert variant="danger">Username not found!</Alert> : ""}
         </Modal.Body>
       </Modal>
     </>

@@ -4,8 +4,6 @@ const initialState = {
   error: false,
 };
 
-// loading is too fast so im not using it lol
-
 const userNameReducer = (state = initialState, action) => {
   switch (action.type) {
     case "REQUEST_UPDATENAME":
