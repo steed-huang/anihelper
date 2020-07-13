@@ -12,7 +12,7 @@ function App(props) {
       <Navbar bg="primary" variant="dark">
         <Navbar.Brand>AniHelper</Navbar.Brand>
         <Navbar.Collapse className="justify-content-end">
-          <Button variant="light" onClick={props.toggleLog}>
+          <Button variant="light" onClick={props.onToggleLogin}>
             {props.name ? "Signed in as: " + props.name : "Not Signed In"}
           </Button>
         </Navbar.Collapse>
@@ -26,14 +26,14 @@ function App(props) {
 // mapping redux state to props
 const mapStateToProps = (state) => {
   return {
-    name: state.name,
+    name: state.name.username,
   };
 };
 
 // mapping redux dispatch to props
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLog: () => dispatch(toggleLogin()),
+    onToggleLogin: () => dispatch(toggleLogin()),
   };
 };
 

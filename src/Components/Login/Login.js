@@ -13,14 +13,13 @@ function Login(props) {
   // updates username
   const handleLogin = () => {
     if (textInput.current.value.trim() !== "") {
-      props.updateNam(textInput.current.value.trim());
-      props.toggleLog();
+      props.onUpdateName(textInput.current.value.trim());
     }
   };
 
   return (
     <>
-      <Modal show={props.login} onHide={props.toggleLog} backdrop="static" keyboard={false}>
+      <Modal show={props.login} onHide={props.onToggleLogin} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Enter MAL Username</Modal.Title>
         </Modal.Header>
@@ -43,14 +42,16 @@ function Login(props) {
 const mapStateToProps = (state) => {
   return {
     login: state.login,
+    loading: state.name.loading,
+    error: state.name.error,
   };
 };
 
 // mapping redux dispatch to props
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLog: () => dispatch(toggleLogin()),
-    updateNam: (value) => dispatch(updateName(value)),
+    onToggleLogin: () => dispatch(toggleLogin()),
+    onUpdateName: (value) => dispatch(updateName(value)),
   };
 };
 
