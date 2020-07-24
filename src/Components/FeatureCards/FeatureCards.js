@@ -1,4 +1,5 @@
 import React from "react";
+import "./FeatureCards.css";
 import Card from "react-bootstrap/Card";
 import CardDeck from "react-bootstrap/CardDeck";
 import { Link } from "react-router-dom";
@@ -9,7 +10,7 @@ export default function FeatureCards() {
       <CardDeck>
         <Card border="primary" bg="light">
           <Link to="/schedule">
-            <Card.Img variant="top" src="http://placegoat.com/500/300" />
+            <Card.Img variant="top" src={require("../../Assets/img.png")} />
           </Link>
           <Card.Body>
             <Card.Title>Schedule</Card.Title>
@@ -22,7 +23,7 @@ export default function FeatureCards() {
 
         <Card border="primary" bg="light">
           <Link to="/recommend">
-            <Card.Img variant="top" src="http://placegoat.com/500/300" />
+            <Card.Img variant="top" src={require("../../Assets/img.png")} />
           </Link>
           <Card.Body>
             <Card.Title>Recommendations</Card.Title>
@@ -34,14 +35,14 @@ export default function FeatureCards() {
         </Card>
 
         <Card border="primary" bg="light">
-          <Link to="/search">
-            <Card.Img variant="top" src="http://placegoat.com/500/300" />
+          <Link to="/list">
+            <Card.Img variant="top" src={require("../../Assets/img.png")} />
           </Link>
           <Card.Body>
-            <Card.Title>Search</Card.Title>
-            <Card.Text>Find shows through specific search parameters</Card.Text>
+            <Card.Title>List</Card.Title>
+            <Card.Text>See a styled list of all your anime</Card.Text>
             <ul>
-              <li>Option to only display shows not seen by you</li>
+              <li>TBD Features</li>
             </ul>
           </Card.Body>
         </Card>

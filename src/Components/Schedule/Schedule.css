@@ -1,0 +1,18 @@
+#week_container {
+  text-align: center;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.day-column {
+  vertical-align: top;
+  margin-left: 1%;
+  margin-right: 1%;
+  display: inline-block;
+}
+
+.anime-card {
+  margin-bottom: 5%;
+}
