@@ -32,10 +32,28 @@ export const requestUpdateNameError = () => {
   };
 };
 
-// update tool
-export const updateTool = (tool) => {
+// update schedule async
+export const updateSchedule = () => {
   return {
-    type: "UPDATE",
-    payload: tool,
+    type: "FETCH_UPDATESCHEDULE",
+  };
+};
+
+export const requestUpdateSchedule = () => {
+  return {
+    type: "REQUEST_UPDATESCHEDULE",
+  };
+};
+
+export const requestUpdateScheduleSuccess = (days) => {
+  return {
+    type: "REQUEST_UPDATESCHEDULE_SUCCESS",
+    payload: days,
+  };
+};
+
+export const requestUpdateScheduleError = () => {
+  return {
+    type: "REQUEST_UPDATESCHEDULE_FAIL",
   };
 };

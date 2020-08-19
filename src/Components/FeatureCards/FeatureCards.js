@@ -27,7 +27,7 @@ export default function FeatureCards() {
           </Link>
           <Card.Body>
             <Card.Title>Recommendations</Card.Title>
-            <Card.Text>Get reccomended anime to watch</Card.Text>
+            <Card.Text>Get recommended anime to watch</Card.Text>
             <ul>
               <li>Based on your favourite & highest rated shows</li>
             </ul>
