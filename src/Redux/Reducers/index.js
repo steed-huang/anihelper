@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
   name: userNameReducer,
-  tool: weeklyScheduleReducer,
+  schedule: weeklyScheduleReducer,
   login: showLoginReducer,
 });
 

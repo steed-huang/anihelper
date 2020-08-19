@@ -1,9 +1,12 @@
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put, call, all } from "redux-saga/effects";
 import {
   toggleLogin,
   requestUpdateName,
   requestUpdateNameSuccess,
   requestUpdateNameError,
+  requestUpdateSchedule,
+  requestUpdateScheduleSuccess,
+  requestUpdateScheduleError,
 } from "../Actions";
 
 function* updateNameAsync(action) {
@@ -17,14 +20,40 @@ function* updateNameAsync(action) {
       });
     });
 
-    // otherwise complete action and close popup
+    // successful action, close popup
     yield put(requestUpdateNameSuccess(action.payload));
     yield put(toggleLogin());
   } catch (e) {
+    // unsuccessful
     yield put(requestUpdateNameError());
   }
 }
 
-export function* watchUpdateName() {
-  yield takeLatest("FETCH_UPDATENAME", updateNameAsync);
+function* updateScheduleAsync() {
+  try {
+    yield put(requestUpdateSchedule());
+
+    // api call to get schedule for week
+    const days = yield fetch("https://api.jikan.moe/v3/schedule").then((res) => res.json());
+
+    console.log(days);
+
+    // successfully got schedule
+    yield put(requestUpdateScheduleSuccess());
+  } catch (e) {
+    // unsuccessful
+    yield put(requestUpdateScheduleError());
+  }
 }
+
+function* watchAll() {
+  yield all([
+    // watch updatename
+    takeLatest("FETCH_UPDATENAME", updateNameAsync),
+
+    // watch updateschedule
+    takeLatest("FETCH_UPDATESCHEDULE", updateScheduleAsync),
+  ]);
+}
+
+export default watchAll;

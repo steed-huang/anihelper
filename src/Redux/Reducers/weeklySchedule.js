@@ -15,11 +15,11 @@ const initialState = {
 const weeklyScheduleReducer = (state = initialState, action) => {
   switch (action.type) {
     case "REQUEST_UPDATESCHEDULE":
-      return 1;
+      return { ...state, loading: true, error: false };
     case "REQUEST_UPDATESCHEDULE_SUCCESS":
-      return 1;
+      return { days: action.payload, loading: false, error: false };
     case "REQUEST_UPDATESCHEDULE_FAIL":
-      return 1;
+      return { ...state, loading: false, error: true };
     default:
       return state;
   }

@@ -7,12 +7,12 @@ import allReducers from "./Redux/Reducers";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
-import { watchUpdateName } from "./Redux/Sagas/saga";
+import allSagas from "./Redux/Sagas/saga";
 
 const sagaMiddlewear = createSagaMiddleware();
 const store = createStore(allReducers, applyMiddleware(sagaMiddlewear));
 
-sagaMiddlewear.run(watchUpdateName);
+sagaMiddlewear.run(allSagas);
 
 ReactDOM.render(
   <React.StrictMode>
