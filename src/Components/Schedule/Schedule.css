@@ -15,12 +15,18 @@
 }
 
 .anime-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
+  background: rgb(240, 240, 240);
+  border-radius: 1rem;
+  margin: auto;
+  width: 90%;
+  height: 25rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .anime-card {
+  display: inline-block;
+  vertical-align: top;
   margin: 0.5%;
 }
