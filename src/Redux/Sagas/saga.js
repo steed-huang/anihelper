@@ -34,12 +34,27 @@ function* updateScheduleAsync() {
     yield put(requestUpdateSchedule());
 
     // api call to get schedule for week
-    const days = yield fetch("https://api.jikan.moe/v3/schedule").then((res) => res.json());
+    const week_schedule = yield fetch("https://api.jikan.moe/v3/schedule").then((res) =>
+      res.json()
+    );
+
+    // destructure days
+    const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
+
+    // storing in new object (capitalized for map in sched)
+    const days = {
+      Sunday: sunday,
+      Monday: monday,
+      Tuesday: tuesday,
+      Wednesday: wednesday,
+      Thursday: thursday,
+      Friday: friday,
+      Saturday: saturday,
+    };
 
     console.log(days);
-
     // successfully got schedule
-    yield put(requestUpdateScheduleSuccess());
+    yield put(requestUpdateScheduleSuccess(days));
   } catch (e) {
     // unsuccessful
     yield put(requestUpdateScheduleError());

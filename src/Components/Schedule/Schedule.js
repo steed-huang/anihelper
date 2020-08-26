@@ -34,15 +34,21 @@ function Schedule(props) {
                 <h1>{day}</h1>
               </div>
               <div className="anime-container">
-                <Card className="anime-card">
-                  <Card.Header>
-                    <Card.Title>Card Title</Card.Title>
-                  </Card.Header>
-                  <Card.Img variant="top" src={require("../../Assets/img-anime.png")} />
-                  <Card.Footer>
-                    <small className="text-muted">Last updated 3 mins ago</small>
-                  </Card.Footer>
-                </Card>
+                {props.shows
+                  ? props.shows[day].map((anime) => {
+                      return (
+                        <Card className="anime-card">
+                          <Card.Header>
+                            <Card.Title>{anime.title}</Card.Title>
+                          </Card.Header>
+                          <Card.Img variant="top" src={anime.image_url} />
+                          <Card.Footer>
+                            <small className="text-muted">Last updated 3 mins ago</small>
+                          </Card.Footer>
+                        </Card>
+                      );
+                    })
+                  : ""}
               </div>
             </div>
           );
@@ -55,7 +61,7 @@ function Schedule(props) {
 // mapping redux state to props
 const mapStateToProps = (state) => {
   return {
-    days: state.schedule.days,
+    shows: state.schedule.days,
     loading: state.schedule.loading,
     error: state.schedule.error,
   };
