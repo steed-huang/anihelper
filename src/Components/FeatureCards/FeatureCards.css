@@ -4,3 +4,26 @@
   margin-bottom: 5%;
   width: 95%;
 }
+
+#credit {
+  opacity: 0.5;
+  margin: 0.3%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+#credit a {
+  color: #007bff;
+}
+
+.card-img {
+  background: rgb(220, 220, 220);
+  display: block;
+  text-align: center;
+}
+
+.card-icon {
+  width: 50%;
+  margin: 3%;
+}
