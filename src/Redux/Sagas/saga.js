@@ -1,4 +1,4 @@
-import { takeLatest, put, call, all } from "redux-saga/effects";
+import { takeLatest, select, put, call, all } from "redux-saga/effects";
 import {
   toggleLogin,
   requestUpdateName,
@@ -8,6 +8,9 @@ import {
   requestUpdateScheduleSuccess,
   requestUpdateScheduleError,
 } from "../Actions";
+
+// state selectors
+const weeklySchedule = (state) => state.schedule;
 
 function* updateNameAsync(action) {
   try {
@@ -31,30 +34,35 @@ function* updateNameAsync(action) {
 
 function* updateScheduleAsync() {
   try {
-    yield put(requestUpdateSchedule());
+    const scheduleState = yield select(weeklySchedule);
+    const curDate = new Date().getDay();
 
-    // api call to get schedule for week
-    const week_schedule = yield fetch("https://api.jikan.moe/v3/schedule").then((res) =>
-      res.json()
-    );
+    // only get schedule from api if the date has changed (or first time)
+    if (scheduleState.date !== curDate) {
+      yield put(requestUpdateSchedule());
 
-    // destructure days
-    const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
+      // api call to get schedule for week
+      const week_schedule = yield fetch("https://api.jikan.moe/v3/schedule").then((res) =>
+        res.json()
+      );
 
-    // storing in new object (capitalized for map in sched)
-    const days = {
-      Sunday: sunday,
-      Monday: monday,
-      Tuesday: tuesday,
-      Wednesday: wednesday,
-      Thursday: thursday,
-      Friday: friday,
-      Saturday: saturday,
-    };
+      // destructure days
+      const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
 
-    console.log(days);
-    // successfully got schedule
-    yield put(requestUpdateScheduleSuccess(days));
+      // storing in new object (capitalized for map in sched)
+      const days = {
+        Sunday: sunday,
+        Monday: monday,
+        Tuesday: tuesday,
+        Wednesday: wednesday,
+        Thursday: thursday,
+        Friday: friday,
+        Saturday: saturday,
+      };
+
+      // successfully got schedule
+      yield put(requestUpdateScheduleSuccess({ days, date: curDate }));
+    }
   } catch (e) {
     // unsuccessful
     yield put(requestUpdateScheduleError());
