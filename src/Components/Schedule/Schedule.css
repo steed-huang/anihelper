@@ -18,7 +18,7 @@
   background: rgb(240, 240, 240);
   border-radius: 1rem;
   margin: auto;
-  width: 90%;
+  width: 95%;
   height: 25rem;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -26,7 +26,15 @@
 }
 
 .anime-card {
+  width: 12rem;
+  margin: 0.3%;
   display: inline-block;
   vertical-align: top;
-  margin: 0.5%;
+}
+
+.anime-title {
+  line-height: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
