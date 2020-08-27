@@ -37,13 +37,10 @@ function Schedule(props) {
                 {props.shows
                   ? props.shows[day].map((anime) => {
                       return (
-                        <Card
-                          className="anime-card"
-                          border="primary"
-                          style={{ width: "12rem" }}
-                          key={anime.title}
-                        >
-                          <Card.Header as="h6">{anime.title}</Card.Header>
+                        <Card className="anime-card" border="secondary" key={anime.title}>
+                          <Card.Header title={anime.title} as="h6">
+                            <div className="anime-title">{anime.title}</div>
+                          </Card.Header>
                           <Card.Img variant="top" src={anime.image_url} />
                           <Card.Footer>
                             <small className="text-muted">{anime.airing_start}</small>
