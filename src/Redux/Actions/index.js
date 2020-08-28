@@ -57,3 +57,29 @@ export const requestUpdateScheduleError = () => {
     type: "REQUEST_UPDATESCHEDULE_FAIL",
   };
 };
+
+// update userdata async
+export const updateAnimeList = () => {
+  return {
+    type: "FETCH_UPDATEANIMELIST",
+  };
+};
+
+export const requestUpdateAnimeList = () => {
+  return {
+    type: "REQUEST_UPDATEANIMELIST",
+  };
+};
+
+export const requestUpdateAnimeListSuccess = (days) => {
+  return {
+    type: "REQUEST_UPDATEANIMELIST_SUCCESS",
+    payload: days,
+  };
+};
+
+export const requestUpdateAnimeListError = () => {
+  return {
+    type: "REQUEST_UPDATEANIMELIST_FAIL",
+  };
+};

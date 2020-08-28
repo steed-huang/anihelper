@@ -7,10 +7,15 @@ import {
   requestUpdateSchedule,
   requestUpdateScheduleSuccess,
   requestUpdateScheduleError,
+  requestUpdateAnimeList,
+  requestUpdateAnimeListSuccess,
+  requestUpdateAnimeListError,
 } from "../Actions";
 
 // state selectors
 const weeklySchedule = (state) => state.schedule;
+const userData = (state) => state.userdata;
+const userName = (state) => state.name.username;
 
 function* updateNameAsync(action) {
   try {
@@ -69,6 +74,37 @@ function* updateScheduleAsync() {
   }
 }
 
+function* updateAnimeListAsync() {
+  try {
+    const userNameState = yield select(userName);
+
+    // fail request if there is no username
+    if (!userNameState) {
+      throw new Error();
+    } else {
+      const userDataState = yield select(userData);
+
+      // only need to fetch once (will add update later)
+      if (!userDataState.has_list) {
+        yield put(requestUpdateAnimeList());
+
+        // api call to get user animelist
+        const list = yield fetch(
+          "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
+        ).then((res) => res.json());
+
+        console.log(list);
+
+        // successfully got animelist
+        yield put(requestUpdateAnimeListSuccess());
+      }
+    }
+  } catch (e) {
+    // unsuccessful
+    yield put(requestUpdateAnimeListError());
+  }
+}
+
 function* watchAll() {
   yield all([
     // watch updatename
@@ -76,6 +112,9 @@ function* watchAll() {
 
     // watch updateschedule
     takeLatest("FETCH_UPDATESCHEDULE", updateScheduleAsync),
+
+    // watch updateanimelist
+    takeLatest("FETCH_UPDATEANIMELIST", updateAnimeListAsync),
   ]);
 }
 

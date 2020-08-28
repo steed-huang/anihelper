@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Schedule.css";
 import Card from "react-bootstrap/Card";
 import { connect } from "react-redux";
-import { updateSchedule } from "../../Redux/Actions";
+import { updateSchedule, updateAnimeList } from "../../Redux/Actions";
 
 function Schedule(props) {
   const [days, setDays] = useState([
@@ -54,6 +54,7 @@ function Schedule(props) {
           );
         })}
       </div>
+      <button onClick={() => props.onUpdateAnimeList()}>Test</button>
     </>
   );
 }
@@ -71,6 +72,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateSchedule: () => dispatch(updateSchedule()),
+    onUpdateAnimeList: () => dispatch(updateAnimeList()),
   };
 };
 
