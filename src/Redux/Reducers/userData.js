@@ -13,7 +13,9 @@ const userDataReducer = (state = initialState, action) => {
       return { ...state, loading: true, error: false };
     case "REQUEST_UPDATEANIMELIST_SUCCESS":
       return {
-        ...state,
+        has_list: true,
+        watching: action.payload.watching,
+        completed: action.payload.completed,
         loading: false,
         error: false,
       };

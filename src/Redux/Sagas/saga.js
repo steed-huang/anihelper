@@ -85,7 +85,7 @@ function* updateAnimeListAsync() {
       const userDataState = yield select(userData);
 
       // only need to fetch once (will add update later)
-      if (!userDataState.has_list) {
+      if (!userDataState.watching) {
         yield put(requestUpdateAnimeList());
 
         // api call to get user animelist
@@ -93,10 +93,21 @@ function* updateAnimeListAsync() {
           "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
         ).then((res) => res.json());
 
-        console.log(list);
+        // arrays for completed and watched
+        let watching = [];
+        let completed = [];
+
+        // sort into each array
+        list.anime.forEach((anime) => {
+          if (anime.watching_status === 2) {
+            completed.push(anime);
+          } else if (anime.watching_status === 1) {
+            watching.push(anime);
+          }
+        });
 
         // successfully got animelist
-        yield put(requestUpdateAnimeListSuccess());
+        yield put(requestUpdateAnimeListSuccess({ watching, completed }));
       }
     }
   } catch (e) {
