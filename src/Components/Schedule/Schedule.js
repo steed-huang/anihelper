@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Schedule.css";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Spinner from "react-bootstrap/Spinner";
+import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
-import { updateSchedule, updateAnimeList } from "../../Redux/Actions";
+import { updateSchedule, updateAnimeList, toggleLogin } from "../../Redux/Actions";
 
 function Schedule(props) {
   const [days, setDays] = useState([
@@ -20,6 +23,11 @@ function Schedule(props) {
   // whether to only display users "watching" shows
   const [userOnly, setUserOnly] = useState(false);
 
+  // for watching toggle error modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   // update days array
   useEffect(() => {
     const cur_day = new Date().getDay();
@@ -29,8 +37,14 @@ function Schedule(props) {
     props.onUpdateSchedule();
   }, []);
 
+  useEffect(() => {
+    if (props.scheduleError === true || props.listError === true)
+      alert("Oops... something went wrong!");
+  }, [props.scheduleError, props.listError]);
+
   return (
     <>
+      {/*Toggle Button*/}
       <div id="watching-toggle">
         <h5 class="toggle-component">Only display "watching" shows:</h5>
         <ButtonGroup class="toggle-component" toggle>
@@ -40,8 +54,10 @@ function Schedule(props) {
             checked={userOnly}
             onChange={() => {
               if (!userOnly) {
-                props.onUpdateAnimeList();
-                setUserOnly(true);
+                if (props.name) {
+                  props.onUpdateAnimeList();
+                  setUserOnly(true);
+                } else handleShow();
               }
             }}
           >
@@ -62,6 +78,7 @@ function Schedule(props) {
         </ButtonGroup>
       </div>
 
+      {/*Anime Display Rows*/}
       <div id="week_container">
         {days.map((day) => {
           // cards to be drawn in the respective day
@@ -114,6 +131,36 @@ function Schedule(props) {
           }
         })}
       </div>
+
+      {/*Loading Overlay*/}
+      {props.scheduleLoading || props.listLoading ? (
+        <div id="modal_background">
+          <div id="modal_content">
+            <Spinner animation="border" variant="light" size="lg" />
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {/*Watching Toggle Error*/}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Not Signed In</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You must provide a valid username to use this feature</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleClose();
+              props.onToggleLogin();
+            }}
+          >
+            Sign In
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
@@ -121,10 +168,13 @@ function Schedule(props) {
 // mapping redux state to props
 const mapStateToProps = (state) => {
   return {
+    name: state.name.username,
     shows: state.schedule.days,
-    loading: state.schedule.loading,
-    error: state.schedule.error,
     watching: state.userdata.watching,
+    scheduleLoading: state.schedule.loading,
+    listLoading: state.userdata.loading,
+    scheduleError: state.schedule.error,
+    listError: state.userdata.error,
   };
 };
 
@@ -133,6 +183,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateSchedule: () => dispatch(updateSchedule()),
     onUpdateAnimeList: () => dispatch(updateAnimeList()),
+    onToggleLogin: () => dispatch(toggleLogin()),
   };
 };
 

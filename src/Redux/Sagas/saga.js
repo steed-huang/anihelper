@@ -1,4 +1,4 @@
-import { takeLatest, select, put, call, all } from "redux-saga/effects";
+import { takeLatest, select, delay, race, put, call, all } from "redux-saga/effects";
 import {
   toggleLogin,
   requestUpdateName,
@@ -21,11 +21,12 @@ function* updateNameAsync(action) {
   try {
     yield put(requestUpdateName());
 
-    // api call | if the username is not valid throw error
-    yield call(() => {
-      return fetch("https://api.jikan.moe/v3/user/" + action.payload).then((res) => {
+    // api call | if the username is not valid throw error (10s timeout)
+    yield race({
+      user: fetch("https://api.jikan.moe/v3/user/" + action.payload).then((res) => {
         if (!res.ok) throw new Error();
-      });
+      }),
+      timeout: delay(10000),
     });
 
     // successful action, close popup
@@ -46,27 +47,30 @@ function* updateScheduleAsync() {
     if (scheduleState.date !== curDate) {
       yield put(requestUpdateSchedule());
 
-      // api call to get schedule for week
-      const week_schedule = yield fetch("https://api.jikan.moe/v3/schedule").then((res) =>
-        res.json()
-      );
+      // api call to get schedule for week (15s timeout)
+      const { week_schedule } = yield race({
+        week_schedule: fetch("https://api.jikan.moe/v3/schedule").then((res) => res.json()),
+        timeout: delay(15000),
+      });
 
-      // destructure days
-      const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
+      if (week_schedule) {
+        // destructure days
+        const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
 
-      // storing in new object (capitalized for map in sched)
-      const days = {
-        Sunday: sunday,
-        Monday: monday,
-        Tuesday: tuesday,
-        Wednesday: wednesday,
-        Thursday: thursday,
-        Friday: friday,
-        Saturday: saturday,
-      };
+        // storing in new object (capitalized for map in sched)
+        const days = {
+          Sunday: sunday,
+          Monday: monday,
+          Tuesday: tuesday,
+          Wednesday: wednesday,
+          Thursday: thursday,
+          Friday: friday,
+          Saturday: saturday,
+        };
 
-      // successfully got schedule
-      yield put(requestUpdateScheduleSuccess({ days, date: curDate }));
+        // successfully got schedule
+        yield put(requestUpdateScheduleSuccess({ days, date: curDate }));
+      } else throw new Error();
     }
   } catch (e) {
     // unsuccessful
@@ -91,26 +95,31 @@ function* updateAnimeListAsync() {
       ) {
         yield put(requestUpdateAnimeList());
 
-        // api call to get user animelist
-        const list = yield fetch(
-          "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
-        ).then((res) => res.json());
-
-        // arrays for completed and watched
-        let watching = [];
-        let completed = [];
-
-        // sort into each array
-        list.anime.forEach((anime) => {
-          if (anime.watching_status === 2) {
-            completed.push(anime);
-          } else if (anime.watching_status === 1) {
-            watching.push(anime);
-          }
+        // api call to get user animelist (15s timeout)
+        const { list } = yield race({
+          list: yield fetch(
+            "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
+          ).then((res) => res.json()),
+          timeout: delay(15000),
         });
 
-        // successfully got animelist
-        yield put(requestUpdateAnimeListSuccess({ watching, completed, userNameState }));
+        if (list) {
+          // arrays for completed and watched
+          let watching = [];
+          let completed = [];
+
+          // sort into each array
+          list.anime.forEach((anime) => {
+            if (anime.watching_status === 2) {
+              completed.push(anime);
+            } else if (anime.watching_status === 1) {
+              watching.push(anime);
+            }
+          });
+
+          // successfully got animelist
+          yield put(requestUpdateAnimeListSuccess({ watching, completed, userNameState }));
+        } else throw new Error();
       }
     }
   } catch (e) {
