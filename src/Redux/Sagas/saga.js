@@ -84,8 +84,11 @@ function* updateAnimeListAsync() {
     } else {
       const userDataState = yield select(userData);
 
-      // only need to fetch once (will add update later)
-      if (!userDataState.watching) {
+      // only need to fetch once (or if username has changed)
+      if (
+        !userDataState.watching ||
+        (userDataState.username && userNameState !== userDataState.username)
+      ) {
         yield put(requestUpdateAnimeList());
 
         // api call to get user animelist
@@ -107,7 +110,7 @@ function* updateAnimeListAsync() {
         });
 
         // successfully got animelist
-        yield put(requestUpdateAnimeListSuccess({ watching, completed }));
+        yield put(requestUpdateAnimeListSuccess({ watching, completed, userNameState }));
       }
     }
   } catch (e) {

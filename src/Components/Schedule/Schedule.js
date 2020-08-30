@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Schedule.css";
 import Card from "react-bootstrap/Card";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { connect } from "react-redux";
 import { updateSchedule, updateAnimeList } from "../../Redux/Actions";
 
@@ -15,6 +17,7 @@ function Schedule(props) {
     "Saturday",
   ]);
 
+  // whether to only display users "watching" shows
   const [userOnly, setUserOnly] = useState(false);
 
   // update days array
@@ -28,6 +31,37 @@ function Schedule(props) {
 
   return (
     <>
+      <div id="watching-toggle">
+        <h5 class="toggle-component">Only display "watching" shows:</h5>
+        <ButtonGroup class="toggle-component" toggle>
+          <ToggleButton
+            type="radio"
+            variant="secondary"
+            checked={userOnly}
+            onChange={() => {
+              if (!userOnly) {
+                props.onUpdateAnimeList();
+                setUserOnly(true);
+              }
+            }}
+          >
+            ON
+          </ToggleButton>
+          <ToggleButton
+            type="radio"
+            variant="secondary"
+            checked={!userOnly}
+            onChange={() => {
+              if (userOnly) {
+                setUserOnly(false);
+              }
+            }}
+          >
+            OFF
+          </ToggleButton>
+        </ButtonGroup>
+      </div>
+
       <div id="week_container">
         {days.map((day) => {
           // cards to be drawn in the respective day
@@ -72,7 +106,7 @@ function Schedule(props) {
             return (
               <div className="day-container" key={day}>
                 <div className="day-title">
-                  <h1>{day}</h1>
+                  <h2>{day}</h2>
                 </div>
                 <div className="anime-container">{cards.map((card) => card)}</div>
               </div>
@@ -80,15 +114,6 @@ function Schedule(props) {
           }
         })}
       </div>
-
-      <button
-        onClick={() => {
-          props.onUpdateAnimeList();
-          setUserOnly(true);
-        }}
-      >
-        Test
-      </button>
     </>
   );
 }

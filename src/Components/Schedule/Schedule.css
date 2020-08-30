@@ -2,7 +2,7 @@
   text-align: center;
   width: 95%;
   margin: 0 auto;
-  margin-top: 3%;
+  margin-top: 1.5%;
   margin-bottom: 5%;
 }
 
@@ -11,6 +11,10 @@
 }
 
 .day-title {
+  background: #007bff;
+  color: white;
+  min-height: 2.75rem;
+  border-radius: 0.5rem;
   margin-bottom: 1%;
 }
 
@@ -18,7 +22,7 @@
   background: rgb(240, 240, 240);
   border-radius: 1rem;
   margin: auto;
-  width: 95%;
+  width: 99%;
   height: 25rem;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -38,4 +42,15 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+#watching-toggle {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.toggle-component {
+  display: inline-block;
+  margin: 1%;
+  margin-top: 2%;
 }
