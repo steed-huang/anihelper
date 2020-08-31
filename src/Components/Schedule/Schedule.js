@@ -37,10 +37,18 @@ function Schedule(props) {
     props.onUpdateSchedule();
   }, []);
 
+  // check if error occurred and alert user
   useEffect(() => {
     if (props.scheduleError === true || props.listError === true)
       alert("Oops... something went wrong!");
   }, [props.scheduleError, props.listError]);
+
+  // update if username changes while "watching" is on
+  useEffect(() => {
+    if (userOnly) {
+      props.onUpdateAnimeList();
+    }
+  }, [props.name]);
 
   return (
     <>
