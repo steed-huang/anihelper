@@ -1,4 +1,4 @@
-import { takeLatest, select, delay, race, put, call, all } from "redux-saga/effects";
+import { takeLatest, select, delay, race, put, all } from "redux-saga/effects";
 import {
   toggleLogin,
   requestUpdateName,

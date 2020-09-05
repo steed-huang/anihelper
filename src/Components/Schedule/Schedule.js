@@ -54,8 +54,8 @@ function Schedule(props) {
     <>
       {/*Toggle Button*/}
       <div id="watching-toggle">
-        <h5 class="toggle-component">Only display "watching" shows:</h5>
-        <ButtonGroup class="toggle-component" toggle>
+        <h5 className="toggle-component">Only display "watching" shows:</h5>
+        <ButtonGroup className="toggle-component" id="toggle_btn" toggle>
           <ToggleButton
             type="radio"
             variant="secondary"
@@ -94,7 +94,7 @@ function Schedule(props) {
 
           // if shows state exists (api request completed), determine which shows to be drawn
           if (props.shows) {
-            props.shows[day].map((anime) => {
+            props.shows[day].forEach((anime) => {
               // whether this anime card is getting drawn
               let draw = true;
 
@@ -116,7 +116,9 @@ function Schedule(props) {
                     <Card.Header title={anime.title} as="h6">
                       <div className="anime-title">{anime.title}</div>
                     </Card.Header>
-                    <Card.Img variant="top" src={anime.image_url} />
+                    <div className="image-div">
+                      <img className="card-img" src={anime.image_url} alt="Cover" />
+                    </div>
                     <Card.Footer>
                       <small className="text-muted">{anime.airing_start}</small>
                     </Card.Footer>
@@ -136,7 +138,7 @@ function Schedule(props) {
                 <div className="anime-container">{cards.map((card) => card)}</div>
               </div>
             );
-          }
+          } else return null;
         })}
       </div>
 

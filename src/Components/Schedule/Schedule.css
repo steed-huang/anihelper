@@ -43,15 +43,29 @@
   text-overflow: ellipsis;
 }
 
+.image-div {
+  width: 100%;
+  background: #f7f7f7;
+}
+
+.card-img {
+  max-width: 100%;
+  max-height: 17rem;
+}
+
 #watching-toggle {
   margin: 0 auto;
   text-align: center;
+  margin-top: 2%;
 }
 
 .toggle-component {
   display: inline-block;
-  margin: 1%;
-  margin-top: 2%;
+  vertical-align: middle;
+}
+
+#toggle_btn {
+  margin-left: 1%;
 }
 
 #modal_background {
