@@ -32,6 +32,13 @@ export const requestUpdateNameError = () => {
   };
 };
 
+export const requestUpdateFavouritesSuccess = (favourites) => {
+  return {
+    type: "REQUEST_UPDATEFAVOURITES_SUCCESS",
+    payload: favourites,
+  };
+};
+
 // update schedule async
 export const updateSchedule = () => {
   return {

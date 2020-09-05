@@ -116,9 +116,9 @@ function Schedule(props) {
                     <Card.Header title={anime.title} as="h6">
                       <div className="anime-title">{anime.title}</div>
                     </Card.Header>
-                    <div className="image-div">
+                    <a className="image-div" href={anime.url} target="_blank">
                       <img className="card-img" src={anime.image_url} alt="Cover" />
-                    </div>
+                    </a>
                     <Card.Footer>
                       <small className="text-muted">{anime.airing_start}</small>
                     </Card.Footer>

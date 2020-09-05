@@ -4,6 +4,7 @@ import {
   requestUpdateName,
   requestUpdateNameSuccess,
   requestUpdateNameError,
+  requestUpdateFavouritesSuccess,
   requestUpdateSchedule,
   requestUpdateScheduleSuccess,
   requestUpdateScheduleError,
@@ -22,14 +23,16 @@ function* updateNameAsync(action) {
     yield put(requestUpdateName());
 
     // api call | if the username is not valid throw error (10s timeout)
-    yield race({
-      user: fetch("https://api.jikan.moe/v3/user/" + action.payload).then((res) => {
+    const { user_data } = yield race({
+      user_data: fetch("https://api.jikan.moe/v3/user/" + action.payload).then((res) => {
         if (!res.ok) throw new Error();
+        return res.json();
       }),
       timeout: delay(10000),
     });
 
     // successful action, close popup
+    yield put(requestUpdateFavouritesSuccess(user_data.favorites.anime));
     yield put(requestUpdateNameSuccess(action.payload));
     yield put(toggleLogin());
   } catch (e) {
