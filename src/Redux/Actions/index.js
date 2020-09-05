@@ -90,3 +90,28 @@ export const requestUpdateAnimeListError = () => {
     type: "REQUEST_UPDATEANIMELIST_FAIL",
   };
 };
+
+// update recommendations async
+export const updateRecommendations = () => {
+  return {
+    type: "FETCH_UPDATEREC",
+  };
+};
+
+export const requestUpdateRec = () => {
+  return {
+    type: "REQUEST_UPDATEREC",
+  };
+};
+
+export const requestUpdateRecSuccess = () => {
+  return {
+    type: "REQUEST_UPDATEREC_SUCCESS",
+  };
+};
+
+export const requestUpdateRecError = () => {
+  return {
+    type: "REQUEST_UPDATEREC_FAIL",
+  };
+};

@@ -115,7 +115,12 @@ function Schedule(props) {
                     <Card.Header title={anime.title} as="h6">
                       <div className="anime-title">{anime.title}</div>
                     </Card.Header>
-                    <a className="image-div" href={anime.url} target="_blank">
+                    <a
+                      className="image-div"
+                      href={anime.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
                       <img className="card-img" src={anime.image_url} alt="Cover" />
                     </a>
                     <Card.Footer>
@@ -152,7 +157,7 @@ function Schedule(props) {
         ""
       )}
 
-      {/*Watching Toggle Error*/}
+      {/*Requiring Valid User Modal*/}
       <ValidUserModal show={show} handleClose={handleClose} />
     </>
   );

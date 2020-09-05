@@ -11,6 +11,9 @@ import {
   requestUpdateAnimeList,
   requestUpdateAnimeListSuccess,
   requestUpdateAnimeListError,
+  requestUpdateRec,
+  requestUpdateRecSuccess,
+  requestUpdateRecError,
 } from "../Actions";
 
 // state selectors
@@ -131,6 +134,21 @@ function* updateAnimeListAsync() {
   }
 }
 
+function* updateRecAsync() {
+  try {
+    yield put(requestUpdateRec());
+
+    // api call
+    const recommendations = null;
+
+    // successful recommendations requests
+    yield put(requestUpdateRecSuccess(recommendations));
+  } catch (e) {
+    // unsuccessful
+    yield put(requestUpdateRecError());
+  }
+}
+
 function* watchAll() {
   yield all([
     // watch updatename
@@ -141,6 +159,9 @@ function* watchAll() {
 
     // watch updateanimelist
     takeLatest("FETCH_UPDATEANIMELIST", updateAnimeListAsync),
+
+    // watch updaterecommendations
+    takeLatest("FETCH_UPDATEREC", updateRecAsync),
   ]);
 }
 

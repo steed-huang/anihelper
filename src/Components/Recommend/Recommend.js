@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import "./Recommend.css";
 import Button from "react-bootstrap/Button";
 import { connect } from "react-redux";
-import { updateAnimeList } from "../../Redux/Actions";
+import { updateAnimeList, updateRecommendations } from "../../Redux/Actions";
 import ValidUserModal from "../ValidUserModal";
 
 function Recommend(props) {
   // determines anime to be recommended
   const getRecommend = () => {
-    console.log(1);
+    props.onUpdateRec();
+    // should probably do all of this in the saga
+    // so the loading encapsulates the whole "calculation"
+    // get up to 10 favourite and up to 10 of the top rated
+    // get rid of duplicates and put them in an array
+    // pass to recommend saga which fetches up to top two recommended from each
+    // duplicate fetched recommendations increase weighting
+    // list out all recommendations in order for user
   };
 
   // for valid user modal
@@ -52,6 +59,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateAnimeList: () => dispatch(updateAnimeList()),
+    onUpdateRec: () => dispatch(updateRecommendations()),
   };
 };
 
