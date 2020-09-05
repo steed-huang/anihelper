@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Schedule.css";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Spinner from "react-bootstrap/Spinner";
-import Modal from "react-bootstrap/Modal";
+import ValidUserModal from "../ValidUserModal";
 import { connect } from "react-redux";
-import { updateSchedule, updateAnimeList, toggleLogin } from "../../Redux/Actions";
+import { updateSchedule, updateAnimeList } from "../../Redux/Actions";
 
 function Schedule(props) {
   const [days, setDays] = useState([
@@ -23,7 +22,7 @@ function Schedule(props) {
   // whether to only display users "watching" shows
   const [userOnly, setUserOnly] = useState(false);
 
-  // for watching toggle error modal
+  // for valid user modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -154,23 +153,7 @@ function Schedule(props) {
       )}
 
       {/*Watching Toggle Error*/}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Not Signed In</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>You must provide a valid username to use this feature</Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={() => {
-              handleClose();
-              props.onToggleLogin();
-            }}
-          >
-            Sign In
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ValidUserModal show={show} handleClose={handleClose} />
     </>
   );
 }
@@ -193,7 +176,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateSchedule: () => dispatch(updateSchedule()),
     onUpdateAnimeList: () => dispatch(updateAnimeList()),
-    onToggleLogin: () => dispatch(toggleLogin()),
   };
 };
 
