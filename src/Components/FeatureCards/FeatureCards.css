@@ -17,13 +17,22 @@
   color: #007bff;
 }
 
-.card-img {
+.card-img-a {
+  height: 20rem;
   background: rgb(220, 220, 220);
-  display: block;
+}
+
+.card-img {
   text-align: center;
+  height: 100%;
+  width: 100%;
 }
 
 .card-icon {
-  width: 50%;
-  margin: 3%;
+  max-width: 90%;
+  max-height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 4%;
 }

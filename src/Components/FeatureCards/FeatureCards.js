@@ -10,7 +10,7 @@ export default function FeatureCards() {
       <div id="deck-container">
         <CardDeck>
           <Card border="primary" bg="light">
-            <Link to="/schedule">
+            <Link to="/schedule" className="card-img-a">
               <div className="card-img">
                 <img className="card-icon" src={require("../../Assets/calendar.svg")} alt="img" />
               </div>
@@ -25,7 +25,7 @@ export default function FeatureCards() {
           </Card>
 
           <Card border="primary" bg="light">
-            <Link to="/recommend">
+            <Link to="/recommend" className="card-img-a">
               <div className="card-img">
                 <img className="card-icon" src={require("../../Assets/stars.svg")} alt="img" />
               </div>
@@ -40,7 +40,7 @@ export default function FeatureCards() {
           </Card>
 
           <Card border="primary" bg="light">
-            <Link to="/list">
+            <Link to="/list" className="card-img-a">
               <div className="card-img">
                 <img className="card-icon" src={require("../../Assets/list.svg")} alt="img" />
               </div>
