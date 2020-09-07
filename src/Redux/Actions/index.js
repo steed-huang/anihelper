@@ -104,9 +104,10 @@ export const requestUpdateRec = () => {
   };
 };
 
-export const requestUpdateRecSuccess = () => {
+export const requestUpdateRecSuccess = (shows) => {
   return {
     type: "REQUEST_UPDATEREC_SUCCESS",
+    payload: shows,
   };
 };
 

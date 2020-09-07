@@ -9,13 +9,6 @@ function Recommend(props) {
   // determines anime to be recommended
   const getRecommend = () => {
     props.onUpdateRec();
-    // should probably do all of this in the saga
-    // so the loading encapsulates the whole "calculation"
-    // get up to 10 favourite and up to 10 of the top rated
-    // get rid of duplicates and put them in an array
-    // pass to recommend saga which fetches up to top two recommended from each
-    // duplicate fetched recommendations increase weighting
-    // list out all recommendations in order for user
   };
 
   // for valid user modal
@@ -41,6 +34,16 @@ function Recommend(props) {
         </Button>
       </div>
 
+      <div>
+        {props.recommended
+          ? props.recommended.map((show) => (
+              <div key={show.mal_id}>
+                <div>{show.title}</div> <img src={show.image_url} />
+              </div>
+            ))
+          : ""}
+      </div>
+
       {/*Requiring Valid User Modal*/}
       <ValidUserModal show={show} handleClose={handleClose} />
     </>
@@ -52,6 +55,7 @@ const mapStateToProps = (state) => {
   return {
     name: state.name.username,
     userdata: state.userdata,
+    recommended: state.recommend.recommentations,
   };
 };
 

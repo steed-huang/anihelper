@@ -1,4 +1,4 @@
-import { takeLatest, select, delay, race, put, all } from "redux-saga/effects";
+import { takeLatest, select, delay, race, put, call, all } from "redux-saga/effects";
 import {
   toggleLogin,
   requestUpdateName,
@@ -86,47 +86,42 @@ function* updateScheduleAsync() {
 
 function* updateAnimeListAsync() {
   try {
+    // selecting redux state
     const userNameState = yield select(userName);
+    const userDataState = yield select(userData);
 
-    // fail request if there is no username
-    if (!userNameState) {
-      throw new Error();
-    } else {
-      const userDataState = yield select(userData);
+    // only need to fetch once (or if username has changed)
+    if (
+      !userDataState.watching ||
+      (userDataState.username && userNameState !== userDataState.username)
+    ) {
+      yield put(requestUpdateAnimeList());
 
-      // only need to fetch once (or if username has changed)
-      if (
-        !userDataState.watching ||
-        (userDataState.username && userNameState !== userDataState.username)
-      ) {
-        yield put(requestUpdateAnimeList());
+      // api call to get user animelist (15s timeout)
+      const { list } = yield race({
+        list: yield fetch(
+          "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
+        ).then((res) => res.json()),
+        timeout: delay(15000),
+      });
 
-        // api call to get user animelist (15s timeout)
-        const { list } = yield race({
-          list: yield fetch(
-            "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
-          ).then((res) => res.json()),
-          timeout: delay(15000),
+      if (list) {
+        // arrays for completed and watched
+        let watching = [];
+        let completed = [];
+
+        // sort into each array
+        list.anime.forEach((anime) => {
+          if (anime.watching_status === 2) {
+            completed.push(anime);
+          } else if (anime.watching_status === 1) {
+            watching.push(anime);
+          }
         });
 
-        if (list) {
-          // arrays for completed and watched
-          let watching = [];
-          let completed = [];
-
-          // sort into each array
-          list.anime.forEach((anime) => {
-            if (anime.watching_status === 2) {
-              completed.push(anime);
-            } else if (anime.watching_status === 1) {
-              watching.push(anime);
-            }
-          });
-
-          // successfully got animelist
-          yield put(requestUpdateAnimeListSuccess({ watching, completed, userNameState }));
-        } else throw new Error();
-      }
+        // successfully got animelist
+        yield put(requestUpdateAnimeListSuccess({ watching, completed, userNameState }));
+      } else throw new Error();
     }
   } catch (e) {
     // unsuccessful
@@ -138,11 +133,52 @@ function* updateRecAsync() {
   try {
     yield put(requestUpdateRec());
 
-    // api call
-    const recommendations = null;
+    // update user anime list if not already
+    yield call(updateAnimeListAsync);
 
-    // successful recommendations requests
-    yield put(requestUpdateRecSuccess(recommendations));
+    // destructuring different lists from userdata
+    const { watching, completed, favourites } = yield select(userData);
+
+    // sort (non favourites) by highest rated (descending score)
+    let all_shows = [...watching, ...completed];
+    all_shows.sort((a, b) => {
+      return b.score - a.score;
+    });
+
+    // slice the ids of the top ten shows
+    let top_shows = all_shows.slice(0, 10);
+    top_shows = top_shows.map((show) => show.mal_id);
+
+    // add favourite shows to top shows if not already included
+    favourites.forEach((show) => {
+      if (!top_shows.includes(show.mal_id)) top_shows.push(show.mal_id);
+    });
+
+    // fetch the top two recommended for each top show
+    let recommended = [];
+    for (let show_id of top_shows) {
+      // fetch shows recommended anime and concat top two
+      const cur_rec = yield fetch("https://api.jikan.moe/v3/anime/" + show_id + "/recommendations")
+        .then((res) => res.json())
+        .then((res) => res.recommendations.slice(0, 2));
+
+      // add fetched recommended anime to array
+      recommended = [...recommended, ...cur_rec];
+
+      // 500ms delay to avoid rate limit :(
+      yield delay(500);
+    }
+
+    // remove duplicates
+    recommended = recommended.filter(
+      (show, index, self) => self.findIndex((s) => s.mal_id === show.mal_id) === index
+    );
+
+    // remove if already in list of completed/watchig
+    recommended = recommended.filter((show) => !all_shows.some((s) => s.mal_id === show.mal_id));
+
+    // successful determined recommended
+    yield put(requestUpdateRecSuccess(recommended));
   } catch (e) {
     // unsuccessful
     yield put(requestUpdateRecError());

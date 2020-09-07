@@ -99,19 +99,15 @@ function Schedule(props) {
 
               // if user wants to only see watching anime
               if (props.watching && userOnly) {
-                draw = false;
-
-                // check if the anime is on users watching list
-                props.watching.forEach((watching_anime) => {
-                  if (anime.title === watching_anime.title) {
-                    draw = true;
-                  }
-                });
+                // draw if the anime is on users watching list
+                draw = props.watching.some(
+                  (watching_anime) => watching_anime.title === anime.title
+                );
               }
 
               if (draw) {
                 cards.push(
-                  <Card className="anime-card" border="secondary" key={anime.title}>
+                  <Card className="anime-card" border="secondary" key={anime.mal_id}>
                     <Card.Header title={anime.title} as="h6">
                       <div className="anime-title">{anime.title}</div>
                     </Card.Header>
