@@ -14,6 +14,8 @@ import {
   requestUpdateRec,
   requestUpdateRecSuccess,
   requestUpdateRecError,
+  requestUpdateRecTotal,
+  requestUpdateRecProgress,
 } from "../Actions";
 
 // state selectors
@@ -146,7 +148,7 @@ function* updateRecAsync() {
     });
 
     // slice the ids of the top ten shows
-    let top_shows = all_shows.slice(0, 10);
+    let top_shows = all_shows.slice(0, 15);
     top_shows = top_shows.map((show) => show.mal_id);
 
     // add favourite shows to top shows if not already included
@@ -154,16 +156,25 @@ function* updateRecAsync() {
       if (!top_shows.includes(show.mal_id)) top_shows.push(show.mal_id);
     });
 
-    // fetch the top two recommended for each top show
+    // update total request count
+    let fetch_count = top_shows.length;
+    yield put(requestUpdateRecTotal(fetch_count));
+
     let recommended = [];
-    for (let show_id of top_shows) {
-      // fetch shows recommended anime and concat top two
-      const cur_rec = yield fetch("https://api.jikan.moe/v3/anime/" + show_id + "/recommendations")
+    // fetch the top three recommended for each top show
+    for (let i = 0; i < fetch_count; i++) {
+      // fetch shows recommended anime and slice top three
+      const cur_rec = yield fetch(
+        "https://api.jikan.moe/v3/anime/" + top_shows[i] + "/recommendations"
+      )
         .then((res) => res.json())
-        .then((res) => res.recommendations.slice(0, 2));
+        .then((res) => res.recommendations.slice(0, 3));
 
       // add fetched recommended anime to array
       recommended = [...recommended, ...cur_rec];
+
+      // update progress
+      yield put(requestUpdateRecProgress(i + 1));
 
       // 500ms delay to avoid rate limit :(
       yield delay(500);

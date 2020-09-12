@@ -116,3 +116,17 @@ export const requestUpdateRecError = () => {
     type: "REQUEST_UPDATEREC_FAIL",
   };
 };
+
+export const requestUpdateRecTotal = (total) => {
+  return {
+    type: "REQUEST_UPDATEREC_TOTAL",
+    payload: total,
+  };
+};
+
+export const requestUpdateRecProgress = (progress) => {
+  return {
+    type: "REQUEST_UPDATEREC_PROGRESS",
+    payload: progress,
+  };
+};

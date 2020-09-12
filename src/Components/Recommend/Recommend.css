@@ -4,3 +4,30 @@
   margin-top: 10%;
   text-align: center;
 }
+
+#modal_background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modal_spinner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#modal_bar {
+  width: 100%;
+  height: 100%;
+}
+
+#progress_bar {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 30%;
+}
