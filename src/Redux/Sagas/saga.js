@@ -33,7 +33,7 @@ function* updateNameAsync(action) {
         if (!res.ok) throw new Error();
         return res.json();
       }),
-      timeout: delay(10000),
+      timeout: delay(5000),
     });
 
     // successful action, close popup
@@ -58,7 +58,7 @@ function* updateScheduleAsync() {
       // api call to get schedule for week (15s timeout)
       const { week_schedule } = yield race({
         week_schedule: fetch("https://api.jikan.moe/v3/schedule").then((res) => res.json()),
-        timeout: delay(15000),
+        timeout: delay(8000),
       });
 
       if (week_schedule) {
@@ -104,7 +104,7 @@ function* updateAnimeListAsync() {
         list: yield fetch(
           "https://api.jikan.moe/v3/user/" + userNameState + "/animelist"
         ).then((res) => res.json()),
-        timeout: delay(15000),
+        timeout: delay(8000),
       });
 
       if (list) {
@@ -147,6 +147,17 @@ function* updateRecAsync() {
       return b.score - a.score;
     });
 
+    // remove scores under 7
+    let shows_length = all_shows.length;
+    let cutoff = 0;
+    for (let i = 0; i < shows_length; i++) {
+      if (all_shows[i].score < 7) {
+        cutoff = i;
+        break;
+      }
+    }
+    all_shows = all_shows.slice(0, cutoff);
+
     // slice the ids of the top ten shows
     let top_shows = all_shows.slice(0, 15);
     top_shows = top_shows.map((show) => show.mal_id);
@@ -176,8 +187,8 @@ function* updateRecAsync() {
       // update progress
       yield put(requestUpdateRecProgress(i + 1));
 
-      // 500ms delay to avoid rate limit :(
-      yield delay(500);
+      // delay to avoid rate limit :(
+      yield delay(800);
     }
 
     // remove duplicates

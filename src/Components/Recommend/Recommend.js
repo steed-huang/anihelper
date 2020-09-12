@@ -57,17 +57,11 @@ function Recommend(props) {
       {/*Loading Overlay*/}
       {props.recLoading || props.listLoading ? (
         <div id="modal_background">
-          {/*Spinner*/}
           {props.listLoading ? (
             <div id="modal_spinner">
               <Spinner animation="border" variant="light" size="lg" />{" "}
             </div>
-          ) : (
-            ""
-          )}
-
-          {/*Progress Bar*/}
-          {props.recLoading ? (
+          ) : props.recLoading ? (
             <div id="modal_bar">
               <ProgressBar id="progress_bar" animated now={(props.progress / props.total) * 100} />
             </div>
