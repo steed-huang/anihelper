@@ -156,10 +156,10 @@ function* updateRecAsync() {
         break;
       }
     }
-    all_shows = all_shows.slice(0, cutoff);
+    let all_top_shows = all_shows.slice(0, cutoff);
 
     // slice the ids of the top ten shows
-    let top_shows = all_shows.slice(0, 15);
+    let top_shows = all_top_shows.slice(0, 15);
     top_shows = top_shows.map((show) => show.mal_id);
 
     // add favourite shows to top shows if not already included

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Recommend.css";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import Card from "react-bootstrap/Card";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { connect } from "react-redux";
 import { updateAnimeList, updateRecommendations } from "../../Redux/Actions";
@@ -36,17 +37,23 @@ function Recommend(props) {
             } else handleShow();
           }}
           variant="success"
+          id="rec_button"
         >
           Get Recommendations
         </Button>
       </div>
 
-      <div>
+      <div id="rec_container">
         {props.recommended
           ? props.recommended.map((show) => (
-              <div key={show.mal_id}>
-                <div>{show.title}</div> <img src={show.image_url} />
-              </div>
+              <Card className="anime-card" border="secondary" key={show.mal_id}>
+                <Card.Header title={show.title} as="h6">
+                  <div className="anime-title">{show.title}</div>
+                </Card.Header>
+                <a className="image-div" href={show.url} rel="noopener noreferrer" target="_blank">
+                  <img className="card-img" src={show.image_url} alt="Cover" />
+                </a>
+              </Card>
             ))
           : ""}
       </div>
