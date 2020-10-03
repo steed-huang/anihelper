@@ -2,10 +2,123 @@ import React, { useState, useEffect } from "react";
 import "./Rate.css";
 import { connect } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
+import ShowList from "../ShowList";
 import ValidUserModal from "../ValidUserModal";
 import { updateAnimeList } from "../../Redux/Actions";
 
 function Rate(props) {
+  // for rating items
+  const [anime_shows, setShows] = useState([
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+    {
+      id: 1,
+      name: "title",
+      img: "img",
+      rating: 50,
+    },
+  ]);
+
   // for valid user modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -18,9 +131,12 @@ function Rate(props) {
 
   return (
     <>
+      {/* List Body */}
+      <ShowList showList={anime_shows} />
+
       {/*Requiring Valid User Modal*/}
       <ValidUserModal show={show} handleClose={handleClose} />
-      <div>Test</div>
+
       {/*Loading Overlay*/}
       {props.listLoading ? (
         <div id="modal_background">
@@ -38,6 +154,7 @@ function Rate(props) {
 // mapping redux state to props
 const mapStateToProps = (state) => {
   return {
+    userdata: state.userdata,
     listLoading: state.userdata.loading,
     listError: state.userdata.error,
   };
