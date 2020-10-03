@@ -1,7 +1,13 @@
 // login modal
-export const toggleLogin = () => {
+export const toggleLoginOn = () => {
   return {
-    type: "TOGGLE",
+    type: "TOGGLE_ON",
+  };
+};
+
+export const toggleLoginOff = () => {
+  return {
+    type: "TOGGLE_OFF",
   };
 };
 

@@ -6,7 +6,7 @@ import FormControl from "react-bootstrap/FormControl";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import { connect } from "react-redux";
-import { toggleLogin, updateName } from "../../Redux/Actions";
+import { toggleLoginOn, toggleLoginOff, updateName } from "../../Redux/Actions";
 
 function Login(props) {
   // ref to username input
@@ -21,7 +21,7 @@ function Login(props) {
 
   return (
     <>
-      <Modal show={props.login} onHide={props.onToggleLogin} backdrop="static" keyboard={false}>
+      <Modal show={props.login} onHide={props.onToggleLoginOff} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Enter MAL Username</Modal.Title>
         </Modal.Header>
@@ -45,7 +45,7 @@ function Login(props) {
 // mapping redux state to props
 const mapStateToProps = (state) => {
   return {
-    login: state.login,
+    login: state.login.show,
     loading: state.name.loading,
     error: state.name.error,
   };
@@ -54,7 +54,8 @@ const mapStateToProps = (state) => {
 // mapping redux dispatch to props
 const mapDispatchToProps = (dispatch) => {
   return {
-    onToggleLogin: () => dispatch(toggleLogin()),
+    onToggleLoginOn: () => dispatch(toggleLoginOn()),
+    onToggleLoginOff: () => dispatch(toggleLoginOff()),
     onUpdateName: (value) => dispatch(updateName(value)),
   };
 };

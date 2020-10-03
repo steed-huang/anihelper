@@ -2,9 +2,9 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { connect } from "react-redux";
-import { toggleLogin } from "../../Redux/Actions";
+import { toggleLoginOn } from "../../Redux/Actions";
 
-function ValidUserModal({ show, handleClose, onToggleLogin }) {
+function ValidUserModal({ show, handleClose, onToggleLoginOn }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -16,7 +16,7 @@ function ValidUserModal({ show, handleClose, onToggleLogin }) {
           variant="primary"
           onClick={() => {
             handleClose();
-            onToggleLogin();
+            onToggleLoginOn();
           }}
         >
           Sign In
@@ -29,7 +29,7 @@ function ValidUserModal({ show, handleClose, onToggleLogin }) {
 // mapping redux dispatch to props
 const mapDispatchToProps = (dispatch) => {
   return {
-    onToggleLogin: () => dispatch(toggleLogin()),
+    onToggleLoginOn: () => dispatch(toggleLoginOn()),
   };
 };
 

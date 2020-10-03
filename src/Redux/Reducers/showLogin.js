@@ -1,7 +1,9 @@
-const showLoginReducer = (state = false, action) => {
+const showLoginReducer = (state = { show: false }, action) => {
   switch (action.type) {
-    case "TOGGLE":
-      return !state;
+    case "TOGGLE_ON":
+      return { show: true };
+    case "TOGGLE_OFF":
+      return { show: false };
     default:
       return state;
   }

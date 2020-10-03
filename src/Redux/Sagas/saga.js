@@ -1,6 +1,6 @@
 import { takeLatest, select, delay, race, put, call, all } from "redux-saga/effects";
 import {
-  toggleLogin,
+  toggleLoginOff,
   requestUpdateName,
   requestUpdateNameSuccess,
   requestUpdateNameError,
@@ -39,7 +39,7 @@ function* updateNameAsync(action) {
     // successful action, close popup
     yield put(requestUpdateFavouritesSuccess(user_data.favorites.anime));
     yield put(requestUpdateNameSuccess(action.payload));
-    yield put(toggleLogin());
+    yield put(toggleLoginOff());
   } catch (e) {
     // unsuccessful
     yield put(requestUpdateNameError());
