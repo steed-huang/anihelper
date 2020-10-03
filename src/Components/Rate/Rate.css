@@ -13,3 +13,14 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+#buttons_div {
+  width: 100%;
+  margin-top: 2vh;
+}
+
+.func_buttons {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1vh;
+}
