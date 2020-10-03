@@ -1,6 +1,6 @@
 ## AniHelper
 
-React web-app with three useful tools for MAL users
+[Hosted React web-app](https://anihelper.vercel.app/) with three useful tools for MAL users
 
 ### Built With
 
@@ -18,11 +18,12 @@ React web-app with three useful tools for MAL users
 - See what time seasonal anime are airing throughout the week
 - Option to only display shows marked as "watching" by you
 
-**Recommender**
+**Recommendations**
 
 - Get recommended anime to watch
 - Based on your favourite & highest rated shows
 
-**TBD**
+**Rate**
 
-- Possibly integrate [easyrate](https://github.com/steedhuang2002/easyrate)
+- Generates ratings for your watched shows using an elo matchup system
+- Essentially my [easyrate](https://github.com/steedhuang2002/easyrate) mini-project refactored
