@@ -34,22 +34,24 @@ export default function FeatureCards() {
               <Card.Title>Recommendations</Card.Title>
               <Card.Text>Get recommended anime to watch</Card.Text>
               <ul>
+                <li>Generates a personalized list of recommended shows</li>
                 <li>Based on your favourite & highest rated shows</li>
               </ul>
             </Card.Body>
           </Card>
 
           <Card border="primary" bg="light">
-            <Link to="/list" className="card-img-a">
+            <Link to="/rate" className="card-img-a">
               <div className="card-img">
                 <img className="card-icon" src={require("../../Assets/list.svg")} alt="img" />
               </div>
             </Link>
             <Card.Body>
-              <Card.Title>List</Card.Title>
-              <Card.Text>See a styled list of all your anime</Card.Text>
+              <Card.Title>Rate</Card.Title>
+              <Card.Text>Generates ratings for your watched shows</Card.Text>
               <ul>
-                <li>TBD Features</li>
+                <li>Pick the best out of two randomly presented options</li>
+                <li>Determines ratings from elo system</li>
               </ul>
             </Card.Body>
           </Card>
