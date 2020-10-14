@@ -144,8 +144,8 @@ function Schedule(props) {
 
       {/*Loading Overlay*/}
       {props.scheduleLoading || props.listLoading ? (
-        <div id="modal_background">
-          <div id="modal_content">
+        <div className="modal_background">
+          <div className="modal_content">
             <Spinner animation="border" variant="light" size="lg" />
           </div>
         </div>

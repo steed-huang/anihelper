@@ -5,7 +5,7 @@
   text-align: center;
 }
 
-#modal_background {
+.modal_background {
   position: fixed;
   left: 0;
   top: 0;
@@ -14,7 +14,7 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-#modal_spinner {
+.modal_spinner {
   position: fixed;
   left: 50%;
   top: 50%;

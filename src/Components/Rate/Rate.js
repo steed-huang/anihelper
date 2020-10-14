@@ -5,16 +5,22 @@ import Spinner from "react-bootstrap/Spinner";
 import ShowList from "../ShowList";
 import Button from "react-bootstrap/Button";
 import ValidUserModal from "../ValidUserModal";
+import CompareModal from "../CompareModal";
 import { updateAnimeList } from "../../Redux/Actions";
 
 function Rate(props) {
   // for rating items
-  const [anime_shows, setShows] = useState([]);
+  const [anime_shows, setShows] = useState(null);
 
   // for valid user modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [userShow, setUserShow] = useState(false);
+  const handleUserClose = () => setUserShow(false);
+  const handleUserShow = () => setUserShow(true);
+
+  // for comparing modal
+  const [compShow, setCompShow] = useState(true);
+  const handleCompClose = () => setCompShow(false);
+  const handleCompShow = () => setCompShow(true);
 
   // check if error occurred and alert user
   useEffect(() => {
@@ -56,28 +62,39 @@ function Rate(props) {
       <ShowList showList={anime_shows} />
 
       <div id="buttons_div">
-        <Button
-          className="func_buttons"
-          onClick={() => {
-            if (props.name) {
-              handleLoadItems();
-            } else handleShow();
-          }}
-        >
-          Load Anime
-        </Button>
+        {anime_shows ? (
+          <Button className="func_buttons" size="lg" variant="success" onClick={() => {}}>
+            Start Rating
+          </Button>
+        ) : (
+          <Button
+            className="func_buttons"
+            size="lg"
+            onClick={() => {
+              if (props.name) {
+                handleLoadItems();
+              } else handleUserShow();
+            }}
+          >
+            Load Anime
+          </Button>
+        )}
+
         <Button onClick={() => {}} className="func_buttons">
           Reset Ratings
         </Button>
       </div>
 
+      {/* Anime Comparing Modal */}
+      <CompareModal show={compShow} handleClose={handleCompClose} />
+
       {/*Requiring Valid User Modal*/}
-      <ValidUserModal show={show} handleClose={handleClose} />
+      <ValidUserModal show={userShow} handleClose={handleUserClose} />
 
       {/*Loading Overlay*/}
       {props.listLoading ? (
-        <div id="modal_background">
-          <div id="modal_spinner">
+        <div className="modal_background">
+          <div className="modal_spinner">
             <Spinner animation="border" variant="light" size="lg" />{" "}
           </div>
         </div>

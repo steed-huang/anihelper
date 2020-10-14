@@ -63,9 +63,9 @@ function Recommend(props) {
 
       {/*Loading Overlay*/}
       {props.recLoading || props.listLoading ? (
-        <div id="modal_background">
+        <div className="modal_background">
           {props.listLoading ? (
-            <div id="modal_spinner">
+            <div className="modal_spinner">
               <Spinner animation="border" variant="light" size="lg" />{" "}
             </div>
           ) : props.recLoading ? (
