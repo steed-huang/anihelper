@@ -32,7 +32,14 @@ export default function CompareModal({ show, handleClose, shows, randomize }) {
             </Card>
 
             {/*Draw*/}
-            <Button onClick={() => randomize()} id="draw_but">
+            <Button
+              onClick={() => {
+                randomize();
+                shows[0].rating += 10;
+                //shows[0] = { ...shows[0], rating: 0 }; ?
+              }}
+              id="draw_but"
+            >
               Draw
             </Button>
 

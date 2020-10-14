@@ -13,7 +13,10 @@ function Rate(props) {
   const [anime_shows, setShows] = useState(null);
 
   // temp copy of anime_shows for rating
-  var [anime_shows_temp, setTempShows] = useState(null);
+  const [anime_shows_temp, setTempShows] = useState(null);
+
+  // copy of original scores for reset
+  var original_shows = useRef(null);
 
   // for valid user modal
   const [userShow, setUserShow] = useState(false);
@@ -46,7 +49,8 @@ function Rate(props) {
 
   // set up anime_shows_copy for rating
   const handleStartRating = () => {
-    let randomized = [...anime_shows];
+    // deep copy
+    let randomized = JSON.parse(JSON.stringify(anime_shows));
     randomized.sort(() => 0.5 - Math.random());
     setTempShows(randomized);
     handleCompShow();
@@ -71,6 +75,9 @@ function Rate(props) {
       new_shows.sort((a, b) => {
         return b.rating - a.rating;
       });
+
+      // deep copy
+      original_shows.current = JSON.parse(JSON.stringify(new_shows));
 
       setShows(new_shows);
     }
@@ -105,7 +112,7 @@ function Rate(props) {
           </Button>
         )}
 
-        <Button onClick={() => {}} className="func_buttons">
+        <Button onClick={() => setShows(original_shows.current)} className="func_buttons">
           Reset Ratings
         </Button>
       </div>
