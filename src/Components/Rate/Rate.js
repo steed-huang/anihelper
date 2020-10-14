@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Rate.css";
 import { connect } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
@@ -12,14 +12,24 @@ function Rate(props) {
   // for rating items
   const [anime_shows, setShows] = useState(null);
 
+  // temp copy of anime_shows for rating
+  var [anime_shows_temp, setTempShows] = useState(null);
+
   // for valid user modal
   const [userShow, setUserShow] = useState(false);
   const handleUserClose = () => setUserShow(false);
   const handleUserShow = () => setUserShow(true);
 
   // for comparing modal
-  const [compShow, setCompShow] = useState(true);
-  const handleCompClose = () => setCompShow(false);
+  const [compShow, setCompShow] = useState(false);
+  const handleCompClose = () => {
+    let new_shows = [...anime_shows_temp];
+    new_shows.sort((a, b) => {
+      return b.rating - a.rating;
+    });
+    setShows(new_shows);
+    setCompShow(false);
+  };
   const handleCompShow = () => setCompShow(true);
 
   // check if error occurred and alert user
@@ -27,9 +37,19 @@ function Rate(props) {
     if (props.listError === true) alert("Oops... something went wrong!");
   }, [props.listError]);
 
-  // load anime into list
-  var handleLoadItems = () => {
-    props.onUpdateAnimeList();
+  // randomize temp copy of anime shows
+  const randomizeTemp = () => {
+    let randomized = [...anime_shows_temp];
+    randomized.sort(() => 0.5 - Math.random());
+    setTempShows(randomized);
+  };
+
+  // set up anime_shows_copy for rating
+  const handleStartRating = () => {
+    let randomized = [...anime_shows];
+    randomized.sort(() => 0.5 - Math.random());
+    setTempShows(randomized);
+    handleCompShow();
   };
 
   // update anime shows list
@@ -41,7 +61,7 @@ function Rate(props) {
         // if no score, default 50
         let rating = anime.score ? anime.score * 10 : 50;
         new_shows.push({
-          id: anime.id,
+          id: anime.mal_id,
           name: anime.title,
           img: anime.image_url,
           rating: rating,
@@ -63,7 +83,12 @@ function Rate(props) {
 
       <div id="buttons_div">
         {anime_shows ? (
-          <Button className="func_buttons" size="lg" variant="success" onClick={() => {}}>
+          <Button
+            className="func_buttons"
+            size="lg"
+            variant="success"
+            onClick={() => handleStartRating()}
+          >
             Start Rating
           </Button>
         ) : (
@@ -72,7 +97,7 @@ function Rate(props) {
             size="lg"
             onClick={() => {
               if (props.name) {
-                handleLoadItems();
+                props.onUpdateAnimeList();
               } else handleUserShow();
             }}
           >
@@ -86,7 +111,12 @@ function Rate(props) {
       </div>
 
       {/* Anime Comparing Modal */}
-      <CompareModal show={compShow} handleClose={handleCompClose} />
+      <CompareModal
+        show={compShow}
+        handleClose={handleCompClose}
+        shows={anime_shows_temp}
+        randomize={randomizeTemp}
+      />
 
       {/*Requiring Valid User Modal*/}
       <ValidUserModal show={userShow} handleClose={handleUserClose} />
