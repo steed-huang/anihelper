@@ -50,7 +50,7 @@ function Rate(props) {
   // set up anime_shows_copy for rating
   const handleStartRating = () => {
     // deep copy
-    let randomized = JSON.parse(JSON.stringify(anime_shows));
+    let randomized = anime_shows.map(s => ({...s}));
     randomized.sort(() => 0.5 - Math.random());
     setTempShows(randomized);
     handleCompShow();
@@ -77,7 +77,7 @@ function Rate(props) {
       });
 
       // deep copy
-      original_shows.current = JSON.parse(JSON.stringify(new_shows));
+      original_shows.current = new_shows.map(s => ({...s}));
 
       setShows(new_shows);
     }
