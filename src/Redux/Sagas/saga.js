@@ -23,6 +23,16 @@ const weeklySchedule = (state) => state.schedule;
 const userData = (state) => state.userdata;
 const userName = (state) => state.name.username;
 
+const formatTime = (dateString, military) => {
+  const options = { hour: "numeric", minute: "numeric", hour12: !military };
+  return new Date(dateString).toLocaleTimeString(undefined, options);
+};
+
+const getWeekday = (dateString) => {
+  const options = { weekday: "long" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
 function* updateNameAsync(action) {
   try {
     yield put(requestUpdateName());
@@ -65,16 +75,37 @@ function* updateScheduleAsync() {
         // destructure days
         const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = week_schedule;
 
-        // storing in new object (capitalized for map in sched)
-        const days = {
-          Sunday: sunday,
-          Monday: monday,
-          Tuesday: tuesday,
-          Wednesday: wednesday,
-          Thursday: thursday,
-          Friday: friday,
-          Saturday: saturday,
+        // since dates are utc must combine to sort manually
+        const all_days = [
+          ...sunday,
+          ...monday,
+          ...tuesday,
+          ...wednesday,
+          ...thursday,
+          ...friday,
+          ...saturday,
+        ];
+
+        // sort by airing time
+        all_days.sort((a, b) => {
+          return formatTime(a.airing_start, true).localeCompare(formatTime(b.airing_start, true));
+        });
+
+        // sorting each show into proper local weekday
+        let days = {
+          Sunday: [],
+          Monday: [],
+          Tuesday: [],
+          Wednesday: [],
+          Thursday: [],
+          Friday: [],
+          Saturday: [],
         };
+
+        all_days.forEach((show) => {
+          let formatted_time = formatTime(show.airing_start, false);
+          days[getWeekday(show.airing_start)].push({ ...show, airing_start: formatted_time });
+        });
 
         // successfully got schedule
         yield put(requestUpdateScheduleSuccess({ days, date: curDate }));
