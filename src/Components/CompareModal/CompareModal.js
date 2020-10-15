@@ -10,7 +10,7 @@ export default function CompareModal({ show, handleClose, shows, randomize }) {
       {show ? (
         <Modal show={show} onHide={handleClose} size="lg" backdrop="static" keyboard={false}>
           <Modal.Header closeButton>
-            <Modal.Title>Which is better?</Modal.Title>
+            <Modal.Title>Which is better? (NOT FUNCTIONAL)</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {/*Comparing Options*/}
@@ -35,7 +35,7 @@ export default function CompareModal({ show, handleClose, shows, randomize }) {
             <Button
               onClick={() => {
                 randomize();
-                shows[0].rating += 10;
+                //shows[0].rating += 10;
                 //shows[0] = { ...shows[0], rating: 0 }; ?
               }}
               id="draw_but"
