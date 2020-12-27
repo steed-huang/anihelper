@@ -10,7 +10,7 @@ export default function ShowList({ showList }) {
               <div key={show.id} className="item">
                 <div className="item_number"> {index + 1} </div>
                 <div className="item_name"> {show.name} </div>
-                <div className="item_rating"> {show.rating} </div>
+                <div className="item_rating"> {show.rating.toFixed(1)} </div>
               </div>
             ))
           : ""}
