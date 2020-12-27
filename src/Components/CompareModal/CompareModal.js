@@ -61,9 +61,9 @@ export default function CompareModal({ show, handleClose, shows, randomize }) {
       {show ? (
         <Modal show={show} onHide={handleClose} size="lg" keyboard={false}>
           <Modal.Header>
-            <Modal.Title>Which is better?</Modal.Title>
+            <Modal.Title id="rate_title">Which is better?</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body id="rate_container">
             {/*Comparing Options*/}
 
             {/*Anime 0*/}
@@ -84,7 +84,7 @@ export default function CompareModal({ show, handleClose, shows, randomize }) {
 
             {/*Draw*/}
             <Button onClick={() => handleRating(0.5)} id="draw_but">
-              Draw
+              DRAW
             </Button>
 
             {/*Anime 1*/}
