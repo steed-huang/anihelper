@@ -1,6 +1,6 @@
 ## AniHelper
 
-[Hosted React web-app](https://anihelper.vercel.app/) with three useful tools for MAL users
+React web-app with three useful tools for MAL users
 
 ### Built With
 
